@@ -9,8 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use App\Form\PinFormType;
 
 class PinsController extends AbstractController
@@ -45,7 +43,7 @@ class PinsController extends AbstractController
     public function edit(Pin $pin, Request $request,EntityManagerInterface $em) :Response
     {
 
-        $form = $this->createForm(PinForm::class, $pin, [
+        $form = $this->createForm(PinFormType::class, $pin, [
             'method' => 'PUT'
         ]);
 
@@ -90,11 +88,11 @@ class PinsController extends AbstractController
 
      
     /**
-     * @Route("/pins/{id<[0-9]+>}/delete", name="app_pins_delete", methods={"GET"})
+     * @Route("/pins/{id<[0-9]+>}/delete", name="app_pins_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Pin $pin, EntityManagerInterface $em ) :Response
-    {
-        if($this->isCsrfTokenValid('pin_deletion'.$pin->getId(), $request->request->get('csrf_token')))
+    {  
+        if($this->isCsrfTokenValid('pins_deletion'.$pin->getId(), $request->request->get('csrf_token')))
         {
             $em->remove($pin);
             $em->flush();
