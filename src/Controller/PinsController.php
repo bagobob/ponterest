@@ -11,15 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use App\Form\PinFormType;
 
 class PinsController extends AbstractController
 {
-    private $em;
-
-    public function __construct(EntityManagerInterface $em)
-    {
-        $this->em = $em;
-    }
 
     /**
      * @Route("/", name="app_home", methods="GET")
@@ -45,21 +40,20 @@ class PinsController extends AbstractController
 
     
     /**
-     * @Route("/pins/{id<[0-9]+>}/edit", name="app_pins_edit", methods={"GET", "POST"})
+     * @Route("/pins/{id<[0-9]+>}/edit", name="app_pins_edit", methods={"GET", "PUT"})
      */
-    public function edit(Pin $pin, Request $request) :Response
+    public function edit(Pin $pin, Request $request,EntityManagerInterface $em) :Response
     {
-        $form = $this->createFormBuilder(new Pin)
-        ->add('title', TextType::class)
-        ->add('description', TextareaType::class)
-        ->getForm()
-    ;
+
+        $form = $this->createForm(PinForm::class, $pin, [
+            'method' => 'PUT'
+        ]);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         { 
-            $this->em->flush();
+            $em->flush();
 
             return $this->redirectToRoute('app_home') ;
         }
@@ -73,21 +67,17 @@ class PinsController extends AbstractController
      /**
      * @Route("/pins/create", name="app_pins_create", methods={"GET","POST"})
      */
-    public function create(Request $request) :Response
+    public function create(Request $request, EntityManagerInterface $em) :Response
     {
-        $form = $this->createFormBuilder(new Pin)
-            ->add('title', TextType::class)
-            ->add('description', TextareaType::class)
-            ->getForm()
-        ;
+        $form = $this->createForm(PinFormType::class);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
             $pin = $form->getData();
-            $this->em->persist($pin);
-            $this->em->flush();
+            $em->persist($pin);
+            $em->flush();
 
             return $this->redirectToRoute('app_home') ;
         }
@@ -96,5 +86,19 @@ class PinsController extends AbstractController
         return $this->render('pins/create.html.twig', [
             'form' => $form->createView()
         ]) ;
+    }
+
+     
+    /**
+     * @Route("/pins/{id<[0-9]+>}/delete", name="app_pins_delete", methods={"GET"})
+     */
+    public function delete(Request $request, Pin $pin, EntityManagerInterface $em ) :Response
+    {
+        if($this->isCsrfTokenValid('pin_deletion'.$pin->getId(), $request->request->get('csrf_token')))
+        {
+            $em->remove($pin);
+            $em->flush();
+        }
+        return $this->redirectToRoute('app_home') ;
     }
 }
