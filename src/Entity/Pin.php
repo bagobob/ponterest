@@ -7,14 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Traits\Timestampable;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploadedBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=PinRepository::class)
- * @ORM\HasLifecycleCallbacks
  * @Vich\Uploadable
+ * @ORM\HasLifecycleCallbacks
  */
-class Pin
+class Pin 
 {
     use Timestampable;
 
@@ -43,6 +43,7 @@ class Pin
      * Note: This is not a mapped field of entity metadata, just a simple property.
      * 
      * @Vich\UploadableField(mapping="pin_image", fileNameProperty="imageName")
+     * @Assert\Image(maxSize="8M")
      * 
      * @var File|null
      */
@@ -84,8 +85,6 @@ class Pin
     }
 
     /**
-     * 
-     *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
      */
     public function setImageFile(?File $imageFile = null): void
