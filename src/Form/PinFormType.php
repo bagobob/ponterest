@@ -17,6 +17,7 @@ class PinFormType extends AbstractType
                 'label'    =>'Image (JPG or PNG file)',
                 'required' => false,
                 'allow_delete' => true,
+                'imagine_pattern' => 'squared_thumbnail_small'
             ])
             ->add('title')
             ->add('description')
