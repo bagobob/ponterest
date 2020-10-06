@@ -6,14 +6,14 @@
     <div class="row">
         <div class="col-md-6 mx-auto">
             <article class="pin bg-white rounded shadow">
-                <div class="mw-100 overflow-hidden">
+                <div class="mw-100 rounded-top overflow-hidden">
                     {% if vich_uploader_asset(pin) is null %}
                         <a href="{{ path('app_pins_show',{id: pin.id}) }}">
-                            <img src="{{ asset('images/pins/img_avatar2.png')|imagine_filter("squared_thumbnail_medium") }}" alt="{{ pin.title }}" class="w-100 rounded-top" />
+                            <img src="{{ asset('images/pins/img_avatar2.png')|imagine_filter("squared_thumbnail_medium") }}" alt="{{ pin.title }}" class="w-100" />
                         </a>
                     {% else %}
                         <a href="{{ path('app_pins_show',{id: pin.id}) }}">
-                            <img src="{{ vich_uploader_asset(pin)|imagine_filter("squared_thumbnail_medium") }}" alt="{{ pin.title }}" class="w-100 rounded-top" />
+                            <img src="{{ vich_uploader_asset(pin)|imagine_filter("squared_thumbnail_medium") }}" alt="{{ pin.title }}" class="w-100" />
                         </a>
                     {% endif %}
                 </div>
