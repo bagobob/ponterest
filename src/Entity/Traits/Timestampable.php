@@ -9,12 +9,18 @@
     /**
      * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
     */
-    private $createdAt;
+    private $createdAt ;
 
     /**
      * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
     private $updatedAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
 
         public function getCreatedAt(): ?\DateTimeInterface
         {
