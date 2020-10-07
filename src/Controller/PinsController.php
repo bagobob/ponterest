@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\PinFormType;
+use App\Repository\UserRepository;
 
 class PinsController extends AbstractController
 {
@@ -67,15 +68,17 @@ class PinsController extends AbstractController
      /**
      * @Route("/pins/create", name="app_pins_create", methods={"GET","POST"})
      */
-    public function create(Request $request, EntityManagerInterface $em) :Response
+    public function create(Request $request, EntityManagerInterface $em, UserRepository $userRepo) :Response
     {
-        $form = $this->createForm(PinFormType::class);
+        $pin = new Pin;
+
+        $form = $this->createForm(PinFormType::class, $pin);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
-            $pin = $form->getData();
+            $pin->setUser($this->getUser());
             $em->persist($pin);
             $em->flush();
 

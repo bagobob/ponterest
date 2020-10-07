@@ -22,9 +22,9 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
-###> custom env ###
+###> custom app ignores ###
 /public/images/
-###< end custom env ###
+###< end custom app ignores ###
 
 ###> liip/imagine-bundle ###
 /public/media/cache/
