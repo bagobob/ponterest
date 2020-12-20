@@ -1,10 +1,11 @@
   {{ form_start(form) }}
 
-        {{ form_widget(form) }}
-
+        {{ form_row(form.imageFile) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.description) }}
           <div style="display:none">
-            {{ form_widget(registrationForm.createdAt, { 'attr': {'class': 'hidden-row'} }) }}
-            {{ form_widget(registrationForm.updatedAt, { 'attr': {'class': 'hidden-row'} }) }}
+            {{ form_row(form.createdAt, { 'attr': {'class': 'hidden-row'} }) }}
+            {{ form_row(form.updatedAt, { 'attr': {'class': 'hidden-row'} }) }}
           </div>
 
         <input type="submit" value="{{ submitButtonText }}" class="btn btn-primary btn-block">
