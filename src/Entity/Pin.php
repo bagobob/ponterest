@@ -18,6 +18,7 @@ class Pin
 {
     use Timestampable;
 
+    public const NUM_ITEM_PER_PAGES = 15;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
